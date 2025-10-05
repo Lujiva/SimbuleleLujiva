@@ -38,8 +38,7 @@ Some areas I’ve worked on include:
 ---
 
 ### 📬 Get in Touch  
-- 📧 Email: [simbulelelujiva@gmail.com](mailto:simbulelelujiva@gmail.com)  
-- 💼 LinkedIn: [linkedin.com/in/simbulelelujiva](https://linkedin.com/in/simbulelelujiva)  
+- 📧 Email: [simbulelelujiva@gmail.com](mailto:simbulelelujiva@gmail.com)     
 - 🌐 Portfolio (coming soon)  
 
 ---
