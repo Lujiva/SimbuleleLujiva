@@ -11,7 +11,7 @@ I'm a passionate **Data Analyst** with a strong foundation in **Applied Statisti
 I love transforming complex datasets into meaningful insights that support evidence-based decision-making.  
 My goal is to use data to solve real-world problems, improve processes, and drive measurable impact.  
 
-- 🎓 **BSc in Applied Statistics and Population Science**  
+- 🎓 **BSc Hons in Applied Statistics and Population Science**  
 - 📊 Currently advancing my expertise in **Data Science and Analytics**  
 - 🔍 Interests: Business Analytics • Predictive Modeling • Research • Data Storytelling  
 - 🌍 Based in **Cape Town, South Africa**
