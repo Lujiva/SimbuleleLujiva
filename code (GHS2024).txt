@@ -1,0 +1,512 @@
+"Cluster house in complex", "Townhouse", "Semi-detached house",
+"Dwelling/house/flat", "Informal dwelling/shack in backyard",
+"Informal dwelling/shack not in backyard", "Room/flatlet on a property", "OTHER DWELLING TYPE")
+# Convert counts to percentages based on total respondents
+data_percent <- (data / total_respondents) * 100
+# Convert data to a data frame for easier manipulation
+data_df <- as.data.frame(data_percent)
+# Reshape data for plotting
+data_long <- data_df %>%
+mutate(Sanitation = rownames(data_df)) %>%
+gather(key = "Dwelling_Type", value = "Percentage", -Sanitation)
+# Plot small multiples (faceted bar charts)
+ggplot(data_long, aes(x = Dwelling_Type, y = Percentage, fill = Dwelling_Type)) +
+geom_bar(stat = "identity", show.legend = FALSE) +  # Bar chart
+facet_wrap(~Sanitation, scales = "free_y") +  # Create facets for each sanitation type
+labs(title = "Sanitation Facilities Access vs Dwelling Type (Small Multiples)",
+x = "Dwelling Type",
+y = "Percentage") +
+theme_minimal() +
+theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 8),  # Rotate x-axis labels 90 degrees
+axis.text.y = element_text(size = 8),  # Adjust y-axis text size
+plot.title = element_text(hjust = 0.5),  # Center the title
+strip.text = element_text(size = 10)) +  # Increase size of facet labels
+# Adding percentage labels inside the bars
+geom_text(aes(label = paste0(round(Percentage, 1), "%")),
+color = "black", size = 3,
+fontface = "bold", position = position_stack(vjust = 0.5))
+# Load required package
+library(ggplot2)
+# Create the data frame
+hsg_rdp <- data.frame(
+Response = c("Yes", "No", "Do Not Know"),
+Percent = c(17.0, 82.6, 0.4)
+)
+# Plot
+ggplot(hsg_rdp, aes(x = Response, y = Percent, fill = Response)) +
+geom_bar(stat = "identity", width = 0.6) +
+geom_text(aes(label = paste0(Percent, "%")), vjust = -0.5, size = 5) +
+scale_fill_manual(values = c("#1f78b4", "#33a02c", "#fb9a99")) +
+labs(
+title = "RDP Housing Access (hsg_rdp)",
+x = "Response",
+y = "Percentage"
+) +
+theme_minimal(base_size = 14) +
+theme(legend.position = "none")
+# Load package
+library(ggplot2)
+# Create the data frame
+hwl_status <- data.frame(
+Status = c("Wealthy", "Very comfortable", "Reasonably comfortable",
+"Just getting along", "Poor", "Very poor"),
+Percent = c(1.1, 5.9, 21.8, 56.3, 12.9, 2.1)
+)
+# Plot
+ggplot(hwl_status, aes(x = reorder(Status, Percent), y = Percent, fill = Status)) +
+geom_bar(stat = "identity", width = 0.6) +
+coord_flip() +  # Flip for horizontal bars
+geom_text(aes(label = paste0(Percent, "%")), hjust = -0.1, size = 4.5) +
+scale_fill_brewer(palette = "Set2") +
+labs(
+title = "Household Well-being Status (hwl_status)",
+x = "Status",
+y = "Percentage"
+) +
+theme_minimal(base_size = 14) +
+theme(legend.position = "none")
+library(ggplot2)
+# Create the data frame
+hwl_status <- data.frame(
+Status = c("Wealthy", "Very comfortable", "Reasonably comfortable",
+"Just getting along", "Poor", "Very poor"),
+Percent = c(1.1, 5.9, 21.8, 56.3, 12.9, 2.1)
+)
+# Plot with improved label visibility
+ggplot(hwl_status, aes(x = reorder(Status, Percent), y = Percent, fill = Status)) +
+geom_bar(stat = "identity", width = 0.6) +
+coord_flip() +
+geom_text(aes(label = paste0(Percent, "%")),
+position = position_stack(vjust = 0.5),
+color = "black", size = 4.5) +
+scale_fill_brewer(palette = "Set2") +
+labs(
+title = "Household Well-being Status (hwl_status)",
+x = "Status",
+y = "Percentage"
+) +
+theme_minimal(base_size = 14) +
+theme(
+legend.position = "none",
+plot.margin = margin(10, 20, 10, 10)  # more right space
+)
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(scales)
+# Create the data
+lab_salc_data <- data.frame(
+Income = c("R30 001–R42 000", "R42 001–R54 000", "R54 001–R72 000",
+"R72 001–R96 000", "R96 001–R132 000", "R132 001–R192 000",
+"R192 001–R360 000", "R360 001–R450 000", "R450 001–R650 000",
+"R650 001–R750 000", "R750 001–R850 000", "R1 000 001 or more",
+"DO NOT KNOW", "REFUSED", "Not applicable"),
+Percent = c(0.2, 0.4, 0.9, 0.2, 1.5, 1.1, 2.0, 0.1, 2.1, 0.4, 0.3, 0.5, 1.9, 4.7, 83.9)
+)
+# Reorder for descending bar plot
+lab_salc_data <- lab_salc_data %>%
+arrange(desc(Percent)) %>%
+mutate(Income = factor(Income, levels = Income))
+# Plot
+ggplot(lab_salc_data, aes(x = Income, y = Percent)) +
+geom_bar(stat = "identity", fill = "steelblue") +
+coord_flip() +  # Horizontal bars
+geom_text(aes(label = paste0(Percent, "%")), hjust = -0.1, size = 3.5) +
+scale_y_continuous(labels = percent_format(scale = 1), limits = c(0, 90)) +
+labs(
+title = "Income Distribution (lab_salc)",
+x = "Income Brackets",
+y = "Percentage (%)"
+) +
+theme_minimal()
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+# Create the data
+education_data <- data.frame(
+education = c("GRADE 1", "GRADE 2", "GRADE 3", "GRADE 4", "GRADE 5", "GRADE 6",
+"GRADE 7", "GRADE 8", "GRADE 9", "GRADE 10", "GRADE 11", "GRADE 12",
+"NTC LLL", "N4", "N5", "N6", "CERTIFICATE < GRADE 12",
+"DIPLOMA < GRADE 12", "HIGHER", "DIPLOMA w/ GRADE 12",
+"HIGHER DIPLOMA", "BACHELOR’S DEGREE", "HONOURS DEGREE",
+"POST HIGHER DIPLOMA", "DOCTORAL DEGREES", "DO NOT KNOW", "NO SCHOOLING"),
+Employed = c(0, 0, 0, 0, 1068, 1221, 1343, 2195, 0, 10323, 1829, 39548, 0, 1164, 0, 0, 0, 0, 3522, 7995, 3172, 15678, 2483, 7814, 5274, 875, 0),
+Unemployed = c(0, 0, 0, 0, 0, 1209, 0, 1745, 0, 0, 0, 0, 0, 0, 0, 807, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+Not_Econ_Active = c(1606, 4296, 7367, 6638, 12132, 20276, 40015, 49645, 32113, 53191, 20273, 69478,
+2242, 1878, 1271, 709, 2907, 2120, 6015, 20843, 13254, 15927, 8176, 8362, 3478, 16238, 7812)
+)
+# Convert to long format
+education_long <- education_data %>%
+pivot_longer(cols = c("Employed", "Unemployed", "Not_Econ_Active"),
+names_to = "Employment_Status", values_to = "Count") %>%
+group_by(education) %>%
+mutate(Percent = Count / sum(Count) * 100)
+# Plot: 100% Stacked Bar Chart
+ggplot(education_long, aes(x = reorder(education, -Percent), y = Percent, fill = Employment_Status)) +
+geom_bar(stat = "identity", position = "fill") +
+scale_y_continuous(labels = percent_format(scale = 1)) +
+labs(
+title = "Employment Status by Education Level",
+x = "Education Level",
+y = "Percentage (%)",
+fill = "Employment Status"
+) +
+theme_minimal(base_size = 10) +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+# Load libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+# Create data frame
+education_data <- data.frame(
+education = c("GRADE 1", "GRADE 2", "GRADE 3", "GRADE 4", "GRADE 5", "GRADE 6",
+"GRADE 7", "GRADE 8", "GRADE 9", "GRADE 10", "GRADE 11", "GRADE 12",
+"NTC LLL", "N4", "N5", "N6", "CERTIFICATE < GRADE 12",
+"DIPLOMA < GRADE 12", "HIGHER", "DIPLOMA w/ GRADE 12",
+"HIGHER DIPLOMA", "BACHELOR’S DEGREE", "HONOURS DEGREE",
+"POST HIGHER DIPLOMA", "DOCTORAL DEGREES", "DO NOT KNOW", "NO SCHOOLING"),
+Employed = c(0, 0, 0, 0, 1068, 1221, 1343, 2195, 0, 10323, 1829, 39548, 0, 1164, 0, 0, 0, 0, 3522, 7995, 3172, 15678, 2483, 7814, 5274, 875, 0),
+Unemployed = c(0, 0, 0, 0, 0, 1209, 0, 1745, 0, 0, 0, 0, 0, 0, 0, 807, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+Not_Econ_Active = c(1606, 4296, 7367, 6638, 12132, 20276, 40015, 49645, 32113, 53191, 20273, 69478,
+2242, 1878, 1271, 709, 2907, 2120, 6015, 20843, 13254, 15927, 8176, 8362, 3478, 16238, 7812)
+)
+# Convert to long format
+education_long <- education_data %>%
+pivot_longer(cols = c("Employed", "Unemployed", "Not_Econ_Active"),
+names_to = "Employment_Status", values_to = "Count") %>%
+group_by(education) %>%
+mutate(Total = sum(Count),
+Percent = round(Count / Total * 100, 1),
+pos = cumsum(Percent) - (Percent / 2))  # for label positioning
+# Plot: 100% Stacked Bar with Percentages
+ggplot(education_long, aes(x = reorder(education, -Total), y = Percent, fill = Employment_Status)) +
+geom_bar(stat = "identity", position = "stack", width = 0.8) +
+geom_text(aes(label = ifelse(Percent > 3, paste0(Percent, "%"), "")),
+position = position_stack(vjust = 0.5), size = 3.2, color = "white") +
+labs(
+title = "Employment Status by Education Level (in %)",
+x = "Education Level",
+y = "Percentage (%)",
+fill = "Employment Status"
+) +
+scale_y_continuous(labels = function(x) paste0(x, "%")) +
+theme_minimal(base_size = 10) +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+install.packages("flextable")
+install.packages("officer")
+library(flextable)
+library(officer)
+library(dplyr)
+# Step 1: Data table (abbreviated for demo — insert full data as needed)
+education_table <- data.frame(
+Education = c("GRADE 1", "GRADE 2", "GRADE 3", "GRADE 4", "GRADE 5"),
+Employed = c(0, 0, 0, 0, 1068),
+Unemployed = c(0, 0, 0, 0, 0),
+Not_Economically_Active = c(1606, 4296, 7367, 6638, 12132),
+Total = c(1606, 4296, 7367, 6638, 13200)
+)
+# Step 2: Create a flextable
+ft <- flextable(education_table) %>%
+set_header_labels(
+Education = "Education Level",
+Employed = "Employed",
+Unemployed = "Unemployed",
+Not_Economically_Active = "Not Economically Active",
+Total = "Total"
+) %>%
+autofit()
+# Create a PowerPoint file and add the table
+ppt <- read_pptx() %>%
+add_slide(layout = "Title and Content", master = "Office Theme") %>%
+ph_with(value = ft, location = ph_location_type(type = "body"))
+# Save the file
+print(ppt, target = "education_employment_table.pptx")
+View(education_table)
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+# Create the data
+education_data <- data.frame(
+education = c("GRADE 1", "GRADE 2", "GRADE 3", "GRADE 4", "GRADE 5", "GRADE 6",
+"GRADE 7", "GRADE 8", "GRADE 9", "GRADE 10", "GRADE 11", "GRADE 12",
+"NTC LLL", "N4", "N5", "N6", "CERTIFICATE < GRADE 12",
+"DIPLOMA < GRADE 12", "HIGHER", "DIPLOMA w/ GRADE 12",
+"HIGHER DIPLOMA", "BACHELOR’S DEGREE", "HONOURS DEGREE",
+"POST HIGHER DIPLOMA", "DOCTORAL DEGREES", "DO NOT KNOW", "NO SCHOOLING"),
+Employed = c(0, 0, 0, 0, 1068, 1221, 1343, 2195, 0, 10323, 1829, 39548, 0, 1164, 0, 0, 0, 0, 3522, 7995, 3172, 15678, 2483, 7814, 5274, 875, 0),
+Unemployed = c(0, 0, 0, 0, 0, 1209, 0, 1745, 0, 0, 0, 0, 0, 0, 0, 807, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+Not_Econ_Active = c(1606, 4296, 7367, 6638, 12132, 20276, 40015, 49645, 32113, 53191, 20273, 69478,
+2242, 1878, 1271, 709, 2907, 2120, 6015, 20843, 13254, 15927, 8176, 8362, 3478, 16238, 7812)
+)
+# Convert to long format
+education_long <- education_data %>%
+pivot_longer(cols = c("Employed", "Unemployed", "Not_Econ_Active"),
+names_to = "Employment_Status", values_to = "Count") %>%
+group_by(education) %>%
+mutate(Percent = Count / sum(Count) * 100)
+# Plot: 100% Stacked Bar Chart
+ggplot(education_long, aes(x = reorder(education, -Percent), y = Percent, fill = Employment_Status)) +
+geom_bar(stat = "identity", position = "fill") +
+scale_y_continuous(labels = percent_format(scale = 1)) +
+labs(
+title = "Employment Status by Education Level",
+x = "Education Level",
+y = "Percentage (%)",
+fill = "Employment Status"
+) +
+theme_minimal(base_size = 10) +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+install.packages("haven")
+install.packages("readxl")
+my_data <- read_excel("C:/Users/simo/Downloads/GHS.xlsx")
+library(readxl)
+Copy_of_2024_GHS_Person_Data_Cape_Town_trial_2 <- read_excel("C:/Users/simbu/Downloads/Copy of 2024 GHS Person Data Cape Town trial 2.xlsx")
+View(Copy_of_2024_GHS_Person_Data_Cape_Town_trial_2)
+library(readxl)
+Copy_of_2024_GHS_Person_Data_Cape_Town_trial_2 <- read_excel("C:/Users/simbu/Downloads/Copy of 2024 GHS Person Data Cape Town trial 2.xlsx")
+View(Copy_of_2024_GHS_Person_Data_Cape_Town_trial_2)
+View(data)
+View(Copy_of_2024_GHS_Person_Data_Cape_Town_trial_2)
+View(Copy_of_2024_GHS_Person_Data_Cape_Town_trial_2)
+>
+# Load necessary package
+library(ggplot2)
+# Create the data
+com_int_cafe <- data.frame(
+Response = c("Yes", "No"),
+Percent = c(13.0, 87.0)
+)
+# Draw bar chart
+ggplot(com_int_cafe, aes(x = Response, y = Percent, fill = Response)) +
+geom_bar(stat = "identity", width = 0.6) +
+geom_text(aes(label = paste0(Percent, "%")), vjust = -0.5, size = 5) +
+scale_fill_manual(values = c("Yes" = "#2C7BB6", "No" = "#D7191C")) +
+labs(title = "Internet Access via Café (com_int_cafe)",
+x = "Response",
+y = "Percentage") +
+theme_minimal(base_size = 14)
+# Install and load the waffle package if not already installed
+# install.packages("waffle")
+library(waffle)
+# Load other helpful packages
+library(ggplot2)
+library(dplyr)
+# Define the data
+com_int_cafe <- c("Yes" = 13, "No" = 87)
+# Create waffle plot
+waffle(com_int_cafe, rows = 10,
+colors = c("Yes" = "#1b9e77", "No" = "#d95f02"),
+title = "Access to Internet via Café (com_int_cafe)",
+legend_pos = "bottom")
+# Load necessary package
+library(ggplot2)
+# Create data
+com_int_cafe <- data.frame(
+Response = c("Yes", "No"),
+Frequency = c(186647, 1245558),
+Percent = c(13.0, 87.0)
+)
+# Plot
+ggplot(com_int_cafe, aes(x = Response, y = Percent, fill = Response)) +
+geom_bar(stat = "identity", width = 0.6) +
+geom_text(aes(label = paste0("Freq: ", Frequency, "\n(", Percent, "%)")),
+vjust = -0.5, size = 5) +
+scale_fill_manual(values = c("Yes" = "#1b9e77", "No" = "#d95f02")) +
+labs(title = "Access to Internet via Café (com_int_cafe)",
+x = "Response", y = "Percentage") +
+theme_minimal(base_size = 14)
+geom_text(aes(label = paste0("Freq: ", Frequency, "\n(", Percent, "%)")),
+vjust = -0.5, size = 5)
+# Load required package
+library(ggplot2)
+# Create data
+com_int_cafe <- data.frame(
+Response = c("Yes", "No"),
+Frequency = c(186647, 1245558),
+Percent = c(13.0, 87.0)
+)
+# Plot with labels showing both Frequency and Percent
+ggplot(com_int_cafe, aes(x = Response, y = Percent, fill = Response)) +
+geom_bar(stat = "identity", width = 0.6) +
+geom_text(aes(label = paste0(Frequency, "\n(", Percent, "%)")),
+vjust = -0.3, size = 5, color = "black", fontface = "bold") +
+scale_fill_manual(values = c("Yes" = "#1b9e77", "No" = "#d95f02")) +
+labs(title = "Access to Internet via Café (com_int_cafe)",
+x = "Response", y = "Percentage (%)") +
+theme_minimal(base_size = 14)
+# Load required package
+library(ggplot2)
+# Create data
+com_int_cafe <- data.frame(
+Response = c("Yes", "No"),
+Frequency = c(186647, 1245558),
+Percent = c(13.0, 87.0)
+)
+# Plot with labels showing both Frequency and Percent
+ggplot(com_int_cafe, aes(x = Response, y = Percent, fill = Response)) +
+geom_bar(stat = "identity", width = 0.6) +
+geom_text(aes(label = paste0(Frequency, "\n(", Percent, "%)")),
+vjust = -0.3, size = 5, color = "black", fontface = "bold") +
+scale_fill_manual(values = c("Yes" = "#1b9e77", "No" = "#d95f02")) +
+labs(title = "Access to Internet via Café (com_int_cafe)",
+x = "Response", y = "Percentage (%)") +
+theme_minimal(base_size = 14)
+# Load ggplot2
+library(ggplot2)
+# Create the data frame
+hwl_happy <- data.frame(
+Response = c("Happier", "The same", "Less happy", "REFUSED", "DO NOT KNOW"),
+Percent = c(35.2, 28.5, 35.7, 0.4, 0.2)
+)
+# Horizontal bar chart
+ggplot(hwl_happy, aes(x = reorder(Response, Percent), y = Percent, fill = Response)) +
+geom_bar(stat = "identity") +
+coord_flip() +
+geom_text(aes(label = paste0(Percent, "%")), hjust = -0.1, size = 4.5) +
+scale_fill_brewer(palette = "Set2") +
+labs(
+title = "Self-Reported Happiness Change (hwl_happy)",
+x = "Response",
+y = "Percentage (%)"
+) +
+theme_minimal(base_size = 14) +
+theme(legend.position = "none")
+# Example: creating the data frame in long format
+df <- data.frame(
+hsg_maind = rep(c(
+"Dwelling/house or brick", "Traditional dwelling/hut", "Flat or apartment", "Cluster house",
+"Townhouse", "Semi-detached house", "Dwelling/house/flat", "Informal dwelling/shack backyard",
+"Informal dwelling/shack not backyard", "Room/flatlet", "Other dwelling type"), times=7),
+swr_rub = rep(c(
+"Removed by local authority/private company at least once a week",
+"Removed by local authority/private company less often than once a week",
+"Removed by community members, contracted at least once per week",
+"Removed by community members, contracted less often than once per week",
+"Communal refuse dump",
+"Communal container/central collection point",
+"Dump or leave rubbish anywhere"), each=11),
+Frequency = c(
+699712, 2789, 124280, 20041, 38681, 165206, 21925, 103970, 40898, 75630, 792,  # 1st swr_rub
+854, 0, 1357, 0, 0, 0, 0, 0, 0, 0, 0,                                            # 2nd swr_rub
+0, 0, 0, 0, 1568, 0, 0, 0, 4638, 0, 0,                                           # 3rd swr_rub
+1186, 0, 0, 0, 0, 0, 0, 0, 1218, 0, 0,                                           # 4th swr_rub
+812, 0, 905, 905, 0, 0, 0, 0, 30591, 0, 0,                                        # 5th swr_rub
+3505, 0, 0, 711, 1548, 0, 0, 6504, 79878, 0, 0,                                   # 6th swr_rub
+663, 0, 0, 0, 0, 0, 0, 0, 1438, 0, 0                                             # 7th swr_rub
+)
+)
+library(ggplot2)
+ggplot(df, aes(x = hsg_maind, y = Frequency, fill = swr_rub)) +
+geom_bar(stat = "identity") +
+coord_flip() +  # horizontal bars for readability
+labs(
+title = "Refuse Removal by Dwelling Type",
+x = "Type of Dwelling",
+y = "Frequency",
+fill = "Refuse Removal Method"
+) +
+theme_minimal(base_size = 14) +
+theme(legend.position = "bottom")
+library(dplyr)
+library(ggplot2)
+# Assume df is your data frame from before
+# Calculate total frequency per dwelling type
+df_pct <- df %>%
+group_by(hsg_maind) %>%
+mutate(Total = sum(Frequency)) %>%
+ungroup() %>%
+mutate(Percent = Frequency / Total * 100)
+ggplot(df_pct, aes(x = hsg_maind, y = Percent, fill = swr_rub)) +
+geom_bar(stat = "identity") +
+coord_flip() +
+geom_text(aes(label = ifelse(Percent > 3, paste0(round(Percent,1), "%"), "")),
+position = position_stack(vjust = 0.5), size = 3.5, color = "white") +
+labs(
+title = "Percentage Distribution of Refuse Removal by Dwelling Type",
+x = "Type of Dwelling",
+y = "Percentage (%)",
+fill = "Refuse Removal Method"
+) +
+theme_minimal(base_size = 14) +
+theme(legend.position = "bottom")
+library(dplyr)
+library(ggplot2)
+# Assuming df and df_pct prepared as before
+ggplot(df_pct, aes(x = hsg_maind, y = Percent, fill = swr_rub)) +
+geom_bar(stat = "identity") +
+coord_flip() +
+geom_text(aes(label = ifelse(Percent > 3, paste0(round(Percent,1), "%"), "")),
+position = position_stack(vjust = 0.5),
+size = 5,            # Bigger labels on bars
+color = "white",
+fontface = "bold") +
+labs(
+title = "Percentage Distribution of Refuse Removal by Dwelling Type",
+x = "Type of Dwelling",
+y = "Percentage (%)",
+fill = "Refuse Removal Method"
+) +
+theme_minimal(base_size = 16) +    # Base font size bigger
+theme(
+legend.position = "bottom",
+legend.title = element_text(size = 16, face = "bold"),
+legend.text = element_text(size = 14),
+axis.title = element_text(size = 16, face = "bold"),
+axis.text = element_text(size = 14),
+plot.title = element_text(size = 20, face = "bold", hjust = 0.5)
+)
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+# Create the data frame
+rdp_data <- data.frame(
+DwellingType = c(
+"Brick House", "Traditional Hut", "Flat", "Cluster House",
+"Townhouse", "Semi-detached", "House/Flat", "Shack Backyard",
+"Shack Non-Backyard", "Room/Flatlet", "Other"
+),
+Yes = c(172871, 0, 22227, 0, 3989, 37635, 0, 3470, 1571, 1316, 792),
+No = c(529466, 2789, 104315, 21657, 37808, 127572, 20287, 107004, 157090, 74314, 0),
+DoNotKnow = c(4395, 0, 0, 0, 0, 0, 1638, 0, 0, 0, 0)
+)
+# Convert to long format for ggplot
+rdp_long <- rdp_data %>%
+pivot_longer(cols = c("Yes", "No", "DoNotKnow"),
+names_to = "RDP_Access",
+values_to = "Count") %>%
+group_by(DwellingType) %>%
+mutate(Percent = Count / sum(Count) * 100)
+# Plot
+ggplot(rdp_long, aes(x = reorder(DwellingType, -Count), y = Percent, fill = RDP_Access)) +
+geom_bar(stat = "identity", position = "stack") +
+labs(
+title = "RDP Access by Dwelling Type in the City of Cape Town",
+x = "Dwelling Type",
+y = "Percentage of Households",
+fill = "RDP Access"
+) +
+scale_y_continuous(labels = percent_format(scale = 1)) +
+theme_minimal(base_size = 12) +
+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+data <- matrix(c(
++     706732, 2789, 126542, 21657, 41796, 164390, 21925, 103902, 102533, 75630, 792,  # Flush toilet connected to a public sewerage system
++     0, 0, 0, 0, 0, 0, 0, 0, 6023, 0, 0,  # Flush toilet connected to a septic tank or conservancy tank
++     0, 0, 0, 0, 0, 0, 0, 0, 3823, 0, 0,  # Pour bucket-flush toilet connected to a septic tank
++     0, 0, 0, 0, 0, 0, 0, 777, 5551, 0, 0,  # Chemical/portable toilet
++     0, 0, 0, 0, 0, 0, 0, 0, 6003, 0, 0,  # Pit latrine/toilet with ventilation pipe
++     0, 0, 0, 0, 0, 0, 0, 1044, 0, 0, 0,  # Pit latrine/toilet without ventilation pipe, with slab
++     0, 0, 0, 0, 0, 0, 0, 0, 812, 0, 0,  # Pit latrine/toilet without ventilation pipe, either without slab or open pit
++     0, 0, 0, 0, 0, 0, 0, 1106, 28666, 0, 0,  # Bucket toilet (collected by municipality)
++     0, 0, 0, 0, 0, 817, 0, 3645, 3873, 0, 0,  # Bucket toilet (emptied by household)
++     0, 0, 0, 0, 0, 0, 0, 0, 1379, 0, 0  # Other toilet facility
++ ), nrow = 10, byrow = TRUE)
+View(barplot_heights)
+View(cell_data)
+View(Copy_of_2024_GHS_Person_Data_Cape_Town_trial_2)
